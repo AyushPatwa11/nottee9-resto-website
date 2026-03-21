@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NOTTEE9 — All The Best | Multi-Cuisine Restaurant, Rourkela</title>
+<!-- Optional: set a zero-server form provider endpoint (Formspree/Getform).
+  Replace the value with your form endpoint, e.g. https://formspree.io/f/your_form_id -->
+<script>window.FORM_PROVIDER_URL = 'https://formspree.io/f/your_form_id_here'</script>
+<meta name="description" content="NOTTEE9 – Rourkela's most electrifying multi-cuisine restaurant. Indian, Chinese, Asian & Healthy. Rooftop dining, private rooms. Open 7AM–11PM, Sector-4."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css"/>
+</head>
+<body class="bg-[#0b0b0b] text-white font-poppins overflow-x-hidden">
+
+<!-- ── LOADER ── -->
+<div id="loader" class="fixed inset-0 z-[9999] bg-black flex flex-col items-center justify-center gap-6">
+  <div class="loader-logo text-7xl md:text-9xl font-bebas tracking-wide">
+    <span class="text-white" style="text-shadow:0 0 20px rgba(255,255,255,0.5)">N</span><span class="text-white/70">O</span><span class="text-[#ff2b2b]" style="text-shadow:0 0 30px #ff2b2b">TT</span><span class="text-[#00ff9c]" style="text-shadow:0 0 30px #00ff9c">EE</span><span class="text-[#1ea7ff]" style="text-shadow:0 0 30px #1ea7ff">9</span>
+  </div>
+  <p class="text-[#00ff9c] text-sm tracking-[0.4em] italic">all the best</p>
+  <div class="w-48 h-0.5 bg-white/10 rounded overflow-hidden">
+    <div class="loader-bar h-full bg-gradient-to-r from-[#ff2b2b] via-[#00ff9c] to-[#1ea7ff]"></div>
+  </div>
+</div>
+
+<!-- ── CURSOR ── -->
+<div id="cur" class="fixed z-[9998] w-3.5 h-3.5 border-2 border-[#00ff9c] rounded-full pointer-events-none transition-all duration-150" style="box-shadow:0 0 10px #00ff9c;transform:translate(-50%,-50%)"></div>
+
+<!-- ── NAVBAR ── -->
+<nav id="nav" class="fixed top-0 left-0 right-0 z-[100] py-4 transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+    <a href="#hero" class="nav-logo font-bebas text-3xl tracking-wider flex items-center">
+      <span class="text-white">N</span><span class="text-white/70">O</span><span class="text-[#ff2b2b] neon-red">TT</span><span class="neon-chilli text-lg mx-0.5">🌶</span><span class="text-[#00ff9c] neon-green">EE</span><span class="text-[#1ea7ff] neon-blue">9</span>
+    </a>
+    <ul id="navLinks" class="hidden md:flex items-center gap-8">
+      <li><a href="#hero"        class="nav-link">Home</a></li>
+      <li><a href="#menu"        class="nav-link">Menu</a></li>
+      <li><a href="#specials"    class="nav-link">Specials</a></li>
+      <li><a href="#gallery"     class="nav-link">Gallery</a></li>
+      <li><a href="#reservation" class="nav-link">Reserve</a></li>
+      <li><a href="#events"      class="nav-link">Events</a></li>
+      <li><a href="#contact"     class="nav-link">Contact</a></li>
+    </ul>
+    <a href="#reservation" class="hidden md:block nav-cta">Book Table 🌶</a>
+    <button id="hamBtn" class="md:hidden flex flex-col gap-1.5 p-1" aria-label="Toggle navigation" aria-expanded="false">
+      <span class="block w-6 h-0.5 bg-white transition-all"></span>
+      <span class="block w-6 h-0.5 bg-white transition-all"></span>
+      <span class="block w-6 h-0.5 bg-white transition-all"></span>
+    </button>
+  </div>
+  <!-- Mobile nav -->
+  <div id="mobileMenu" class="hidden md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-white/5 px-6 py-6 flex flex-col gap-5">
+    <a href="#hero" class="nav-link text-lg">Home</a>
+    <a href="#menu" class="nav-link text-lg">Menu</a>
+    <a href="#specials" class="nav-link text-lg">Specials</a>
+    <a href="#gallery" class="nav-link text-lg">Gallery</a>
+    <a href="#reservation" class="nav-link text-lg">Reserve</a>
+    <a href="#events" class="nav-link text-lg">Events</a>
+    <a href="#contact" class="nav-link text-lg">Contact</a>
+  </div>
+</nav>
+
+<main id="mainContent" role="main">
+
+<!-- ================================================================ -->
+<!-- HERO SECTION                                                       -->
+<!-- ================================================================ -->
+<section id="hero" class="relative h-screen min-h-[700px] flex items-center justify-center overflow-hidden">
+  <div id="heroBg" class="absolute inset-0 bg-cover bg-center" style="background-image:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1800&q=85');transform:scale(1.08);filter:brightness(0.3) saturate(1.2)"></div>
+  <div class="absolute inset-0" style="background:radial-gradient(ellipse 70% 50% at 50% 60%,transparent,rgba(11,11,11,0.9) 100%),linear-gradient(to bottom,rgba(11,11,11,0.5),transparent 30%,rgba(11,11,11,0.95) 100%)"></div>
+  <!-- LED dots -->
+  <div class="absolute inset-0 pointer-events-none" style="background-image:radial-gradient(circle,rgba(255,255,255,0.05) 1px,transparent 1px);background-size:16px 16px"></div>
+  <!-- Lanterns -->
+  <div class="lanterns absolute top-0 left-0 right-0 h-40 flex justify-around px-16 pointer-events-none z-10" aria-hidden="true">
+    <span class="lantern text-5xl">🏮</span>
+    <span class="lantern text-3xl" style="animation-delay:.3s">🪔</span>
+    <span class="lantern text-5xl" style="animation-delay:.7s">🏮</span>
+    <span class="lantern text-4xl" style="animation-delay:.15s">⭐</span>
+    <span class="lantern text-5xl" style="animation-delay:.5s">🏮</span>
+    <span class="lantern text-3xl" style="animation-delay:.9s">🪔</span>
+    <span class="lantern text-5xl" style="animation-delay:.4s">🏮</span>
+  </div>
+
+  <div class="relative z-20 text-center px-6 max-w-5xl">
+    <!-- LED Signboard -->
+    <div class="hero-sign inline-block rounded-xl px-10 py-6 mb-6" style="background:rgba(0,0,0,0.8);border:1.5px solid rgba(255,255,255,0.07);box-shadow:0 0 60px rgba(0,0,0,0.9)">
+      <div class="sign-dots absolute inset-0 rounded-xl" style="background-image:radial-gradient(circle,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:10px 10px;pointer-events:none"></div>
+      <div class="font-bebas tracking-wider leading-none relative z-10" style="font-size:clamp(4rem,18vw,9rem)">
+        <span class="text-white neon-w">N</span><span class="text-white/75">O</span><span class="text-[#ff2b2b] neon-red sign-flicker">TT</span>
+        <svg class="inline-block align-middle sign-chilli" viewBox="0 0 30 72" fill="none" style="width:0.28em;margin:0 0.04em">
+          <path d="M15 6C15 6 22 20 20 38C18 52 14 62 15 70" stroke="#ff2b2b" stroke-width="4" stroke-linecap="round"/>
+          <ellipse cx="15" cy="38" rx="8" ry="18" fill="#ff2b2b"/>
+          <path d="M15 6C9 0 5 6 9 12C13 18 15 10 15 6Z" fill="#00cc44"/>
+        </svg>
+        <span class="text-[#00ff9c] neon-green sign-flicker2">EE</span><span class="text-[#1ea7ff] neon-blue sign-flicker3">9</span>
+      </div>
+      <div class="text-[#00ff9c] text-sm tracking-[0.5em] italic mt-1 relative z-10" style="text-shadow:0 0 15px #00ff9c">all the best</div>
+    </div>
+
+    <!-- I ❤ nottee9 -->
+    <div class="flex items-center justify-center gap-3 mb-4 rv" style="transition-delay:0.1s">
+      <span class="font-bebas text-4xl md:text-5xl text-white">I</span>
+      <span class="text-3xl md:text-4xl heartbeat">❤️</span>
+      <span class="font-bebas text-4xl md:text-5xl flex items-center gap-0">
+        <span class="text-white">N</span><span class="text-white/75">O</span><span class="text-[#ff2b2b]">TT</span><span class="text-base">🌶</span><span class="text-[#00ff9c]">EE</span><span class="text-[#1ea7ff]">9</span>
+      </span>
+    </div>
+
+    <p class="text-white/55 text-sm md:text-base tracking-widest mb-8 rv" style="transition-delay:0.2s">All The Best Dining Experience · Sector-4, Rourkela, Odisha</p>
+
+    <div class="flex flex-wrap gap-3 justify-center mb-10 rv" style="transition-delay:0.3s">
+      <a href="#menu"        class="btn-neon btn-red">🍽️ View Menu</a>
+      <a href="#reservation" class="btn-neon btn-green">📅 Reserve Table</a>
+      <a href="tel:+919937582815" class="btn-outline-blue">📞 Call Now</a>
+    </div>
+
+    <div class="flex items-center justify-center gap-4 flex-wrap rv" style="transition-delay:0.45s">
+      <div class="text-center"><span class="block font-bebas text-2xl text-[#00ff9c]" style="text-shadow:0 0 15px #00ff9c">156</span><span class="text-xs tracking-widest text-white/40 uppercase">Seats</span></div>
+      <span class="text-white/15 text-2xl">|</span>
+      <div class="text-center"><span class="block font-bebas text-2xl text-[#00ff9c]" style="text-shadow:0 0 15px #00ff9c">4.5⭐</span><span class="text-xs tracking-widest text-white/40 uppercase">Rating</span></div>
+      <span class="text-white/15 text-2xl">|</span>
+      <div class="text-center"><span class="block font-bebas text-2xl text-[#00ff9c]" style="text-shadow:0 0 15px #00ff9c">5+</span><span class="text-xs tracking-widest text-white/40 uppercase">Cuisines</span></div>
+      <span class="text-white/15 text-2xl">|</span>
+      <div class="text-center"><span class="block font-bebas text-xl text-[#00ff9c]" style="text-shadow:0 0 15px #00ff9c">7AM–11PM</span><span class="text-xs tracking-widest text-white/40 uppercase">Daily</span></div>
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 scroll-bob z-20">
+    <span class="text-[10px] tracking-[0.3em] uppercase text-white/30">Scroll</span>
+    <div class="w-px h-10 bg-gradient-to-b from-[#00ff9c] to-transparent" style="box-shadow:0 0 6px #00ff9c"></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker overflow-hidden py-3 border-y border-white/10" style="background:#ff2b2b;box-shadow:0 0 30px rgba(255,43,43,0.3)">
+  <div class="ticker-inner inline-flex whitespace-nowrap text-[11px] font-bold tracking-widest uppercase text-black">
+    <span class="mx-5">🌶️ Indian</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🥢 Chinese</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🍜 Asian</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🥗 Healthy</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🏙️ Rooftop</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🚪 Private Rooms</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🎂 Birthdays</span><span class="text-black/40">◆</span>
+    <span class="mx-5">👨‍👩‍👧 Family</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🌶️ Indian</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🥢 Chinese</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🍜 Asian</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🥗 Healthy</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🏙️ Rooftop</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🚪 Private Rooms</span><span class="text-black/40">◆</span>
+    <span class="mx-5">🎂 Birthdays</span><span class="text-black/40">◆</span>
+    <span class="mx-5">👨‍👩‍👧 Family</span><span class="text-black/40">◆</span>
+  </div>
+</div>
+
+<!-- ================================================================ -->
+<!-- TODAY'S SPECIALS                                                   -->
+<!-- ================================================================ -->
+<section id="specials" class="sec bg-[#0f0f0f]">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="sec-tag rv">🔥 Today's Specials</p>
+      <h2 class="sec-title col-red rv">Chef's Picks</h2>
+      <div class="sec-rule rv"></div>
+      <p class="sec-sub rv">Hand-picked by our chef — available today only</p>
+    </div>
+    <div id="specialsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <!-- Populated by JS from /api/menu/specials -->
+      <div class="col-span-full text-center py-16 text-white/30">
+        <div class="inline-block w-8 h-8 border-2 border-[#ff2b2b] border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p>Loading specials...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- SMART MENU                                                         -->
+<!-- ================================================================ -->
+<section id="menu" class="sec">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="sec-tag rv">🍽️ Digital Menu</p>
+      <h2 class="sec-title col-green rv">Our Menu</h2>
+      <div class="sec-rule rv"></div>
+      <p class="sec-sub rv">Every dish made fresh with love and "all the best" quality</p>
+    </div>
+
+    <!-- Filters -->
+    <div class="menu-filters rv flex flex-wrap gap-3 justify-center mb-4">
+      <button class="mfb active" data-filter="cat" data-val="all">All 🍴</button>
+      <button class="mfb" data-filter="cat" data-val="Starter">Starters</button>
+      <button class="mfb" data-filter="cat" data-val="Main Course">Main Course</button>
+      <button class="mfb" data-filter="cat" data-val="Rice & Biryani">Biryani</button>
+      <button class="mfb" data-filter="cat" data-val="Noodles & Fried Rice">Noodles</button>
+      <button class="mfb" data-filter="cat" data-val="Mocktails">Drinks</button>
+      <button class="mfb" data-filter="cat" data-val="offers">Offers 🏷️</button>
+      <button class="mfb" data-filter="cat" data-val="Dessert">Desserts</button>
+    </div>
+    <div class="flex flex-wrap gap-2 justify-center mb-10 rv">
+      <button class="mfb-sm" data-filter="type" data-val="all">All Types</button>
+      <button class="mfb-sm" data-filter="type" data-val="veg">🟢 Veg</button>
+      <button class="mfb-sm" data-filter="type" data-val="non-veg">🔴 Non-Veg</button>
+      <span class="w-px bg-white/10 mx-2"></span>
+      <button class="mfb-sm" data-filter="cuisine" data-val="all">All Cuisines</button>
+      <button class="mfb-sm" data-filter="cuisine" data-val="Indian">Indian</button>
+      <button class="mfb-sm" data-filter="cuisine" data-val="Chinese">Chinese</button>
+      <button class="mfb-sm" data-filter="cuisine" data-val="Asian">Asian</button>
+      <button class="mfb-sm" data-filter="cuisine" data-val="Healthy">Healthy</button>
+    </div>
+
+    <div class="flex justify-center mb-6 rv">
+      <input id="menuSearchPublic" type="search" placeholder="Search dishes, cuisine or description..." class="form-input" style="max-width:520px" />
+    </div>
+
+    <div id="menuGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      <div class="col-span-full text-center py-16 text-white/30">
+        <div class="inline-block w-8 h-8 border-2 border-[#00ff9c] border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p>Loading menu...</p>
+      </div>
+    </div>
+    <div id="menuPreviewControls" class="text-center mt-6">
+      <button id="toggleMenuBtn" class="btn-outline-blue">See more</button>
+    </div>
+    <div id="menuEmpty" class="hidden text-center py-16">
+      <div class="text-5xl mb-4">🍽️</div>
+      <p class="text-white/40">No dishes match your filters.</p>
+      <button onclick="resetMenuFilters()" class="mt-4 btn-neon btn-red text-sm py-2 px-5">Clear Filters</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- DISH RECOMMENDATION TOOL                                           -->
+<!-- ================================================================ -->
+<section id="recommend" class="sec bg-[#0f0f0f]">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <p class="sec-tag rv">🤖 Smart Filter</p>
+      <h2 class="sec-title col-blue rv">Find Your Dish</h2>
+      <div class="sec-rule rv"></div>
+      <p class="sec-sub rv">Use filters to discover dishes that match your mood and budget</p>
+    </div>
+    <div class="recommend-box p-8 rounded-xl rv">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+        <div>
+          <label for="rfType" class="form-label">Type</label>
+          <select id="rfType" class="form-input" aria-label="Dish type">
+            <option value="">Any Type</option>
+            <option value="veg">🟢 Vegetarian</option>
+            <option value="non-veg">🔴 Non-Veg</option>
+          </select>
+        </div>
+        <div>
+          <label for="rfSpice" class="form-label">Spice Level</label>
+          <select id="rfSpice" class="form-input" aria-label="Spice level">
+            <option value="">Any Spice</option>
+            <option value="mild">🟡 Mild</option>
+            <option value="medium">🟠 Medium</option>
+            <option value="spicy">🔴 Spicy</option>
+            <option value="extra-spicy">🌶️ Extra Spicy</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Max Budget (₹)</label>
+          <input type="number" id="rfBudget" placeholder="e.g. 300" class="form-input"/>
+        </div>
+        <div>
+          <label for="rfCuisine" class="form-label">Cuisine</label>
+          <select id="rfCuisine" class="form-input" aria-label="Cuisine">
+            <option value="">Any Cuisine</option>
+            <option value="Indian">Indian</option>
+            <option value="Chinese">Chinese</option>
+            <option value="Asian">Asian</option>
+            <option value="Healthy">Healthy</option>
+            <option value="Continental">Continental</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="getRecommendations()" class="btn-neon btn-green w-full py-3">🔍 Find My Dishes</button>
+    </div>
+    <div id="recommendResults" class="mt-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 hidden"></div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- GALLERY                                                            -->
+<!-- ================================================================ -->
+<section id="gallery" class="sec">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="sec-tag rv">📸 Visual Journey</p>
+      <h2 class="sec-title col-blue rv">Gallery</h2>
+      <div class="sec-rule rv"></div>
+    </div>
+    <div class="gal-grid rv">
+      <div class="gi gi-tall" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80" alt="Interior" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">✨ Elegant Interiors</span></div></div>
+      <div class="gi" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80" alt="Dining" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🍽️ Fine Dining</span></div></div>
+      <div class="gi" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600&q=80" alt="Food" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🌿 Artful Cuisine</span></div></div>
+      <div class="gi gi-wide" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80" alt="Rooftop" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🏙️ Rooftop Dining</span></div></div>
+      <div class="gi" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&q=80" alt="Dishes" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🌶️ Signature Dishes</span></div></div>
+      <div class="gi" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Night" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🌃 Night Ambience</span></div></div>
+      <div class="gi gi-tall" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=600&q=80" alt="Drinks" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🥤 Drinks</span></div></div>
+      <div class="gi" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&q=80" alt="Event" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🎂 Celebrations</span></div></div>
+      <div class="gi" onclick="openLB(this)"><img src="https://images.unsplash.com/photo-1576867757603-05b134ebc379?w=600&q=80" alt="Table" class="gal-img"/><div class="gi-ov"><span class="gi-lbl">🕯️ Table Setting</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- TABLE RESERVATION                                                  -->
+<!-- ================================================================ -->
+<section id="reservation" class="sec bg-[#0f0f0f] relative overflow-hidden">
+  <div class="abs-blob-r"></div><div class="abs-blob-g"></div>
+  <div class="max-w-6xl mx-auto px-6 relative z-10">
+    <div class="text-center mb-14">
+      <p class="sec-tag rv">📅 Book Your Table</p>
+      <h2 class="sec-title col-red rv">Reserve Now</h2>
+      <div class="sec-rule rv"></div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+      <!-- Info -->
+      <div class="rv">
+        <h3 class="font-montserrat font-bold text-xl text-white mb-4">Plan Your Visit</h3>
+        <p class="text-white/45 text-sm leading-7 mb-6">We look forward to hosting you! For special occasions our team will decorate your table and make it memorable.</p>
+        <div class="space-y-4">
+          <div class="ri-card"><span>📍</span><div><p class="ri-h">Address</p><p>Sector-4, Rourkela, Odisha 769005</p></div></div>
+          <div class="ri-card"><span>📞</span><div><p class="ri-h">Phone</p><a href="tel:+919937582815" class="hover:text-[#00ff9c] transition-colors">+91 99375 82815</a></div></div>
+          <div class="ri-card"><span>🕐</span><div><p class="ri-h">Hours</p><p>Open Daily · 7:00 AM – 11:00 PM</p></div></div>
+          <div class="ri-card"><span>💺</span><div><p class="ri-h">Capacity</p><p id="seatInfo">Loading availability...</p></div></div>
+        </div>
+      </div>
+      <!-- Form -->
+      <div class="res-box rv">
+        <div class="res-head">
+          <div class="font-bebas text-2xl tracking-wide flex items-center gap-0 justify-center mb-1">
+            <span class="text-white">N</span><span class="text-white/75">O</span><span class="text-[#ff2b2b]">TT</span><span>🌶</span><span class="text-[#00ff9c]">EE</span><span class="text-[#1ea7ff]">9</span>
+          </div>
+          <p class="text-xs tracking-[0.2em] uppercase text-white/60">Table Reservation</p>
+        </div>
+        <form id="resForm" class="p-7">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="form-group"><label class="form-label">Full Name *</label><input type="text" id="rName" placeholder="Your Name" class="form-input" required/></div>
+            <div class="form-group"><label class="form-label">Phone *</label><input type="tel" id="rPhone" placeholder="10-digit number" class="form-input" required/></div>
+            <div class="form-group"><label for="rDate" class="form-label">Date *</label><input type="date" id="rDate" class="form-input" required/></div>
+            <div class="form-group"><label for="rTime" class="form-label">Time *</label><input type="time" id="rTime" min="07:00" max="22:30" class="form-input" required/></div>
+          </div>
+          <div class="form-group mt-4">
+            <label for="rGuests" class="form-label">Guests *</label>
+            <select id="rGuests" class="form-input" required aria-label="Number of guests">
+              <option value="">Select guest count</option>
+              <option value="1">1 Guest</option>
+              <option value="2">2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5 Guests</option>
+              <option value="6">6 Guests</option>
+              <option value="8">8 Guests</option>
+              <option value="10">10 Guests</option>
+              <option value="15">15 Guests</option>
+              <option value="20">20+ Guests</option>
+            </select>
+          </div>
+          <div class="form-group mt-4">
+            <label class="form-label">Special Request</label>
+            <textarea id="rSpecial" rows="2" placeholder="Birthday decoration, dietary needs..." class="form-input resize-none"></textarea>
+          </div>
+          <button type="submit" class="submit-btn mt-5"><span>📅 Confirm Reservation</span></button>
+          <div id="resMsg" class="hidden mt-3 p-3 rounded text-sm text-center"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- EVENT / CELEBRATION BOOKING                                        -->
+<!-- ================================================================ -->
+<section id="events" class="sec">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="sec-tag rv">🎉 Celebrate With Us</p>
+      <h2 class="sec-title col-green rv">Event Booking</h2>
+      <div class="sec-rule rv"></div>
+      <p class="sec-sub rv">From intimate birthdays to grand corporate dinners — we make every event unforgettable</p>
+    </div>
+    <!-- Event types -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 rv">
+      <div class="event-pill" onclick="setEventType('Birthday')"><span class="text-3xl">🎂</span><p>Birthday</p></div>
+      <div class="event-pill" onclick="setEventType('Anniversary')"><span class="text-3xl">💑</span><p>Anniversary</p></div>
+      <div class="event-pill" onclick="setEventType('Group Party')"><span class="text-3xl">🎉</span><p>Group Party</p></div>
+      <div class="event-pill" onclick="setEventType('Corporate Dinner')"><span class="text-3xl">💼</span><p>Corporate</p></div>
+    </div>
+    <div class="res-box rv max-w-3xl mx-auto">
+      <div class="res-head">
+        <p class="font-montserrat font-bold text-lg text-white">Special Event Booking</p>
+        <p class="text-xs text-white/50 mt-0.5">We'll call you within 24 hours to confirm</p>
+      </div>
+      <form id="eventForm" class="p-7">
+        <div class="grid grid-cols-2 gap-4">
+          <div class="form-group"><label class="form-label">Your Name *</label><input type="text" id="eName" placeholder="Full Name" class="form-input" required/></div>
+          <div class="form-group"><label class="form-label">Phone *</label><input type="tel" id="ePhone" placeholder="10-digit" class="form-input" required/></div>
+          <div class="form-group">
+            <label for="eType" class="form-label">Event Type *</label>
+            <select id="eType" class="form-input" required aria-label="Event type">
+              <option value="">Select event type</option>
+              <option value="Birthday">🎂 Birthday</option>
+              <option value="Anniversary">💑 Anniversary</option>
+              <option value="Group Party">🎉 Group Party</option>
+              <option value="Corporate Dinner">💼 Corporate Dinner</option>
+              <option value="Engagement">💍 Engagement</option>
+              <option value="Baby Shower">🍼 Baby Shower</option>
+              <option value="Other">📋 Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="eVenue" class="form-label">Venue Preference</label>
+            <select id="eVenue" class="form-input" aria-label="Venue preference">
+              <option value="Main Hall">Main Hall</option>
+              <option value="Rooftop">Rooftop</option>
+              <option value="Private Room 1">Private Room 1</option>
+              <option value="Private Room 2">Private Room 2</option>
+              <option value="Full Restaurant">Full Restaurant</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Date *</label><input type="date" id="eDate" class="form-input" required/></div>
+          <div class="form-group"><label class="form-label">Time *</label><input type="time" id="eTime" class="form-input" required/></div>
+          <div class="form-group"><label class="form-label">Guest Count *</label><input type="number" id="eGuests" placeholder="e.g. 50" min="5" max="156" class="form-input" required/></div>
+          <div class="form-group">
+            <label class="form-label">Est. Budget (₹)</label>
+            <input type="number" id="eBudget" placeholder="Optional" class="form-input"/>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="eCake" class="w-4 h-4 accent-[#ff2b2b]"/>
+            <span class="text-sm text-white/60">Cake Required 🎂</span>
+          </label>
+          <label class="flex items-center gap-3 cursor-pointer">
+            <input type="checkbox" id="eDecor" class="w-4 h-4 accent-[#00ff9c]"/>
+            <span class="text-sm text-white/60">Decoration 🎀</span>
+          </label>
+        </div>
+        <div class="form-group mt-4">
+          <label class="form-label">Special Requests</label>
+          <textarea id="eReq" rows="3" placeholder="Theme, dietary needs, music, specific arrangements..." class="form-input resize-none"></textarea>
+        </div>
+        <button type="submit" class="submit-btn mt-5" style="border-color:#00ff9c;color:#00ff9c"><span>🎉 Submit Event Request</span></button>
+        <div id="eventMsg" class="hidden mt-3 p-3 rounded text-sm text-center"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- QR CODE MENU                                                       -->
+<!-- ================================================================ -->
+<section id="qr" class="sec bg-[#0f0f0f]">
+  <div class="max-w-2xl mx-auto px-6 text-center">
+    <p class="sec-tag rv">📱 Quick Access</p>
+    <h2 class="sec-title col-blue rv">QR Menu</h2>
+    <div class="sec-rule rv" style="margin:0 auto 1.5rem"></div>
+    <p class="sec-sub rv mb-8">Scan the QR code at your table to instantly view our full menu on your phone</p>
+    <div class="qr-box rv inline-block p-6 rounded-xl">
+      <div id="qrCode" class="w-48 h-48 mx-auto flex items-center justify-center">
+        <div class="w-8 h-8 border-2 border-[#1ea7ff] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+      <p class="text-white/40 text-xs mt-4 tracking-wider">NOTTEE9 Digital Menu</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- CONTACT                                                            -->
+<!-- ================================================================ -->
+<section id="contact" class="sec">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <p class="sec-tag rv">📬 Get In Touch</p>
+      <h2 class="sec-title col-green rv">Contact Us</h2>
+      <div class="sec-rule rv"></div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+      <div class="space-y-4 rv">
+        <div class="ri-card"><span>📍</span><div><p class="ri-h">Address</p><p>Sector-4, Rourkela, Odisha 769005, India</p></div></div>
+        <div class="ri-card"><span>📞</span><div><p class="ri-h">Phone</p><a href="tel:+919937582815" class="text-[#00ff9c] hover:underline">+91 99375 82815</a></div></div>
+        <div class="ri-card"><span>🕐</span><div><p class="ri-h">Opening Hours</p><p>Monday – Sunday: 7:00 AM – 11:00 PM</p></div></div>
+        <div class="ri-card"><span>✉️</span><div><p class="ri-h">Email</p><p>hello@nottee9.in</p></div></div>
+        <!-- Google Maps embed -->
+        <div class="overflow-hidden rounded-xl border border-white/5 mt-2" style="height:220px">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3741.9!2d84.871618!3d22.2454856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a201f682ef53907%3A0x1571dd1220ace3d9!2sNOTTEE9!5e0!3m2!1sen!2sin!4v1" width="100%" height="220" style="border:0;display:block" allowfullscreen loading="lazy" title="NOTTEE9 Location"></iframe>
+        </div>
+      </div>
+      <div class="rv">
+        <div class="res-box">
+          <div class="res-head"><p class="font-montserrat font-bold text-lg text-white">Send a Message</p></div>
+          <form id="conForm" class="p-7">
+            <div class="grid grid-cols-2 gap-4">
+              <div class="form-group"><label class="form-label">Name</label><input type="text" placeholder="Your Name" class="form-input" required/></div>
+              <div class="form-group"><label class="form-label">Phone / Email</label><input type="text" placeholder="Contact" class="form-input" required/></div>
+            </div>
+            <div class="form-group mt-4"><label class="form-label">Message</label><textarea rows="4" placeholder="How can we help?" class="form-input resize-none" required></textarea></div>
+            <button type="submit" class="submit-btn mt-5" style="border-color:#00ff9c;color:#00ff9c"><span>Send Message 📨</span></button>
+            <div id="conMsg" class="hidden mt-3 p-3 rounded text-sm text-center"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Close main content and FOOTER -->
+</main>
+<footer class="bg-[#050505] border-t border-white/5 relative overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px" style="background:linear-gradient(90deg,transparent,#ff2b2b,#00ff9c,#1ea7ff,transparent)"></div>
+  <div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-10">
+    <div>
+      <div class="font-bebas text-3xl tracking-wider flex mb-1"><span class="text-white">N</span><span class="text-white/70">O</span><span class="text-[#ff2b2b]">TT</span><span>🌶</span><span class="text-[#00ff9c]">EE</span><span class="text-[#1ea7ff]">9</span></div>
+      <p class="text-[#00ff9c] text-xs tracking-[0.3em] italic mb-4">all the best</p>
+      <p class="text-white/35 text-sm leading-7 mb-5">Rourkela's most electrifying multi-cuisine restaurant. Every meal made with love.</p>
+      <div class="flex gap-3">
+        <a href="#" class="ft-soc" aria-label="Instagram">📸</a>
+        <a href="#" class="ft-soc" aria-label="Facebook">👍</a>
+        <a href="https://wa.me/919937582815" class="ft-soc" aria-label="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div>
+      <h5 class="ft-h">Quick Links</h5>
+      <ul class="space-y-2.5"><li><a href="#hero" class="ft-link">🏠 Home</a></li><li><a href="#menu" class="ft-link">🍽️ Menu</a></li><li><a href="#gallery" class="ft-link">📸 Gallery</a></li><li><a href="#reservation" class="ft-link">📅 Reserve</a></li><li><a href="#events" class="ft-link">🎉 Events</a></li><li><a href="#contact" class="ft-link">📬 Contact</a></li></ul>
+    </div>
+    <div>
+      <h5 class="ft-h">Cuisines</h5>
+      <ul class="space-y-2.5"><li><a href="#menu" class="ft-link">🌶️ Indian</a></li><li><a href="#menu" class="ft-link">🥢 Chinese</a></li><li><a href="#menu" class="ft-link">🍜 Asian</a></li><li><a href="#menu" class="ft-link">🥗 Healthy</a></li><li><a href="#menu" class="ft-link">🥤 Mocktails</a></li></ul>
+    </div>
+    <div>
+      <h5 class="ft-h">Visit Us</h5>
+      <p class="text-white/35 text-sm leading-7">📍 Sector-4, Rourkela<br>Odisha 769005, India</p>
+      <p class="text-white/35 text-sm mt-3">🕐 7:00 AM – 11:00 PM</p>
+      <a href="tel:+919937582815" class="block mt-3 text-[#00ff9c] font-semibold text-sm" style="text-shadow:0 0 8px #00ff9c">📞 +91 99375 82815</a>
+      <a href="admin.html" class="block mt-4 text-white/20 text-xs hover:text-white/40 transition-colors">🔒 Staff Login</a>
+    </div>
+  </div>
+  <div class="border-t border-white/5 py-5 text-center text-white/20 text-xs">
+    © 2025 <strong class="text-[#ff2b2b]">NOTTEE9</strong> — all the best · Sector-4, Rourkela, Odisha
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<a href="https://wa.me/919937582815?text=Hi%20NOTTEE9!%20I%27d%20like%20to%20make%20a%20reservation%20%F0%9F%8C%B6" class="wa-fab" aria-label="WhatsApp">💬</a>
+<button id="bttBtn" class="btt" aria-label="Back to top">↑</button>
+
+<!-- AI WAITER CHATBOT -->
+<div id="aiBtn" class="ai-fab" onclick="toggleAI()" title="AI Waiter">🤖</div>
+<div id="aiPanel" class="ai-panel hidden">
+  <div class="ai-head">
+    <div>
+      <p class="font-bold text-white text-sm">AI Waiter 🤖</p>
+      <p class="text-[10px] text-[#00ff9c]">Ask me anything about our menu!</p>
+    </div>
+    <button onclick="toggleAI()" class="text-white/40 hover:text-white text-lg">✕</button>
+  </div>
+  <div id="aiChat" class="ai-chat">
+    <div class="ai-msg bot">
+      <span>Hello! 👋 I'm your AI Waiter. Ask me things like:<br><br>
+      • "Suggest spicy dish under ₹300"<br>
+      • "Recommend a veg starter"<br>
+      • "What's good in Chinese?"<br>
+      • "Show me mild healthy dishes"</span>
+    </div>
+  </div>
+  <div class="ai-input-row">
+    <input id="aiInput" type="text" placeholder="Ask me anything..." class="ai-input" onkeydown="if(event.key==='Enter')sendAI()"/>
+    <button onclick="sendAI()" class="ai-send">Send</button>
+  </div>
+  <div class="flex flex-wrap gap-1 p-3 border-t border-white/5">
+    <button class="ai-chip" onclick="quickAsk('Suggest spicy dish under ₹300')">Spicy &lt;₹300</button>
+    <button class="ai-chip" onclick="quickAsk('Recommend veg starter')">Veg Starter</button>
+    <button class="ai-chip" onclick="quickAsk('Best Chinese dish')">Chinese</button>
+    <button class="ai-chip" onclick="quickAsk('Today special')">Today Special</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="hidden fixed inset-0 z-[9990] bg-black/96 flex items-center justify-center p-8 cursor-pointer" onclick="closeLB(event)">
+  <img id="lbImg" src="" alt="" class="max-w-[90vw] max-h-[85vh] object-contain rounded-lg border border-[#00ff9c]/30"/>
+  <button class="absolute top-6 right-6 w-10 h-10 rounded-full bg-[#ff2b2b] text-black font-bold text-lg flex items-center justify-center" onclick="document.getElementById('lightbox').classList.add('hidden')">✕</button>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast hidden"></div>
+
+<script src="js/main.js"></script>
+</body>
+</html>

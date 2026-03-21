@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NOTTEE9 — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+:root { --red:#ff2b2b; --green:#00ff9c; --blue:#1ea7ff; --bg:#0a0a0a; --bg2:#111; --bg3:#1a1a1a; --border:rgba(255,255,255,0.07); }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Poppins',sans-serif; background:var(--bg); color:#fff; display:flex; min-height:100vh; }
+::-webkit-scrollbar { width:4px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--red); border-radius:2px; }
+
+/* Login */
+#loginScreen { position:fixed; inset:0; background:#000; z-index:9999; display:flex; align-items:center; justify-content:center; }
+#loginScreen.gone { display:none; }
+.login-box { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:2.5rem; width:100%; max-width:380px; }
+.login-logo { font-family:'Bebas Neue',sans-serif; font-size:2.5rem; letter-spacing:.06em; text-align:center; margin-bottom:.3rem; }
+.l-r { color:#ff2b2b; text-shadow:0 0 15px #ff2b2b; }
+.l-g { color:#00ff9c; text-shadow:0 0 15px #00ff9c; }
+.l-b { color:#1ea7ff; text-shadow:0 0 15px #1ea7ff; }
+.login-sub { text-align:center; font-size:.7rem; letter-spacing:.2em; color:rgba(255,255,255,.35); margin-bottom:2rem; }
+
+/* Sidebar */
+#sidebar { width:240px; background:var(--bg2); border-right:1px solid var(--border); display:flex; flex-direction:column; position:fixed; top:0; left:0; bottom:0; z-index:100; transition:transform .3s; }
+#sidebar.closed { transform:translateX(-240px); }
+.sb-logo { padding:1.4rem 1.5rem; border-bottom:1px solid var(--border); }
+.sb-logo-txt { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:.06em; }
+.sb-tag { font-size:.6rem; letter-spacing:.2em; color:var(--green); }
+.sb-nav { flex:1; overflow-y:auto; padding:.8rem 0; }
+.sb-link { display:flex; align-items:center; gap:.8rem; padding:.75rem 1.5rem; font-size:.8rem; font-weight:500; color:rgba(255,255,255,.45); cursor:pointer; transition:all .2s; text-decoration:none; border-left:3px solid transparent; }
+.sb-link:hover { color:#fff; background:rgba(255,255,255,.04); }
+.sb-link.active { color:var(--red); border-left-color:var(--red); background:rgba(255,43,43,.06); }
+.sb-section { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.2); padding:.6rem 1.5rem .3rem; }
+.sb-bottom { padding:1rem 1.5rem; border-top:1px solid var(--border); }
+
+/* Main */
+#mainContent { margin-left:240px; flex:1; padding:2rem; min-height:100vh; }
+.page { display:none; }
+.page.active { display:block; }
+
+/* Top bar */
+.topbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; }
+.page-title { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:.06em; }
+
+/* Stats */
+.stats-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:1rem; margin-bottom:2rem; }
+.stat-card { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:1.3rem; position:relative; overflow:hidden; transition:transform .3s; }
+.stat-card:hover { transform:translateY(-2px); }
+.stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+.sc-red::before { background:var(--red); box-shadow:0 0 8px var(--red); }
+.sc-green::before { background:var(--green); box-shadow:0 0 8px var(--green); }
+.sc-blue::before { background:var(--blue); box-shadow:0 0 8px var(--blue); }
+.sc-yellow::before { background:#ffd700; box-shadow:0 0 8px #ffd700; }
+.stat-num { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:.04em; }
+.sc-red .stat-num { color:var(--red); }
+.sc-green .stat-num { color:var(--green); }
+.sc-blue .stat-num { color:var(--blue); }
+.sc-yellow .stat-num { color:#ffd700; }
+.stat-lbl { font-size:.65rem; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-top:.2rem; }
+
+/* Table */
+.data-table { width:100%; border-collapse:collapse; }
+.data-table th { font-size:.65rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.4); padding:.8rem 1rem; text-align:left; border-bottom:1px solid var(--border); background:rgba(255,255,255,.02); }
+.data-table td { padding:.8rem 1rem; font-size:.83rem; color:rgba(255,255,255,.7); border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
+.data-table tr:hover td { background:rgba(255,255,255,.02); }
+.tbl-wrap { background:var(--bg2); border:1px solid var(--border); border-radius:8px; overflow:hidden; overflow-x:auto; }
+
+/* Status badges */
+.status { font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:.25rem .6rem; border-radius:3px; }
+.st-pending { background:rgba(255,215,0,.12); color:#ffd700; }
+.st-confirmed { background:rgba(0,255,156,.1); color:var(--green); }
+.st-cancelled { background:rgba(255,43,43,.1); color:var(--red); }
+.st-completed { background:rgba(30,167,255,.1); color:var(--blue); }
+
+/* Form inputs */
+.adm-label { display:block; font-size:.62rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.35); margin-bottom:.4rem; }
+.adm-input { width:100%; background:rgba(255,255,255,.04); border:1px solid var(--border); color:#fff; padding:.7rem .9rem; font-family:'Poppins',sans-serif; font-size:.85rem; border-radius:5px; outline:none; transition:border-color .3s; }
+.adm-input:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(0,255,156,.07); }
+.adm-input option { background:#141414; }
+
+/* Buttons */
+.adm-btn { padding:.6rem 1.3rem; border-radius:4px; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; font-family:'Poppins',sans-serif; cursor:pointer; transition:all .3s; border:1.5px solid; }
+.adm-btn-red   { border-color:var(--red);   color:var(--red);   background:transparent; }
+.adm-btn-red:hover   { background:var(--red);   color:#000; }
+.adm-btn-green { border-color:var(--green); color:var(--green); background:transparent; }
+.adm-btn-green:hover { background:var(--green); color:#000; }
+.adm-btn-blue  { border-color:var(--blue);  color:var(--blue);  background:transparent; }
+.adm-btn-blue:hover  { background:var(--blue);  color:#000; }
+.adm-btn-sm    { padding:.35rem .8rem; font-size:.62rem; border-radius:3px; }
+
+/* Section heading */
+.sec-h { font-family:'Montserrat',sans-serif; font-size:1rem; font-weight:700; color:#fff; margin-bottom:1rem; padding-bottom:.5rem; border-bottom:1px solid var(--border); }
+
+/* Toggle switch */
+.toggle { position:relative; width:42px; height:22px; }
+.toggle input { opacity:0; width:0; height:0; }
+.toggle-slider { position:absolute; inset:0; background:rgba(255,255,255,.1); border-radius:11px; cursor:pointer; transition:.3s; }
+.toggle-slider::before { content:''; position:absolute; height:16px; width:16px; left:3px; bottom:3px; background:#fff; border-radius:50%; transition:.3s; }
+.toggle input:checked + .toggle-slider { background:var(--green); }
+.toggle input:checked + .toggle-slider::before { transform:translateX(20px); }
+
+/* Toast */
+#adm-toast { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%) translateY(20px); background:var(--bg3); border:1px solid var(--green); color:#fff; padding:.75rem 2rem; border-radius:6px; font-size:.82rem; z-index:9999; opacity:0; transition:all .4s; white-space:nowrap; }
+#adm-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+#adm-toast.err  { border-color:var(--red); }
+
+/* Modal */
+.modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:1000; display:flex; align-items:center; justify-content:center; padding:1rem; }
+.modal-box { background:var(--bg2); border:1px solid var(--border); border-radius:12px; width:100%; max-width:600px; max-height:90vh; overflow-y:auto; }
+.modal-head { padding:1.3rem 1.5rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
+.modal-body { padding:1.5rem; }
+/* Offer modal visuals */
+.offer-preview { margin-top:12px; padding:10px 12px; border-radius:8px; background:linear-gradient(90deg, rgba(0,255,156,0.04), rgba(30,167,255,0.02)); color:#00ff9c; font-weight:700; }
+.offer-preview .orig { color:rgba(255,255,255,.45); text-decoration:line-through; margin-right:10px; font-weight:600; }
+.offer-preview .new { color:#00ff9c; font-size:1.05rem; font-weight:800; }
+.modal-foot { display:flex; gap:10px; margin-top:18px; justify-content:flex-end; }
+.om-error { color:#ff6b6b; margin-top:8px; font-size:0.9rem; display:none; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="text-white">N</span><span class="text-white/70">O</span><span class="l-r">TT</span><span>🌶</span><span class="l-g">EE</span><span class="l-b">9</span>
+    </div>
+    <p class="login-sub">Admin Dashboard</p>
+    <form id="loginForm">
+      <div class="mb-4">
+        <label class="adm-label">Email</label>
+        <input type="email" id="lEmail" placeholder="admin@nottee9.in" class="adm-input" required/>
+      </div>
+      <div class="mb-6">
+        <label class="adm-label">Password</label>
+        <input type="password" id="lPass" placeholder="••••••••" class="adm-input" required/>
+      </div>
+      <button type="submit" class="adm-btn adm-btn-red w-full py-3">Sign In →</button>
+      <div id="loginErr" class="hidden mt-3 text-center text-xs text-[#ff2b2b]"></div>
+    </form>
+    <p class="text-center text-white/20 text-xs mt-4">Default: admin@nottee9.in / nottee9@admin</p>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-txt"><span class="text-white">N</span><span class="text-white/70">O</span><span style="color:#ff2b2b">TT</span>🌶<span style="color:#00ff9c">EE</span><span style="color:#1ea7ff">9</span></div>
+    <div class="sb-tag">Admin Dashboard</div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-section">Overview</div>
+    <a class="sb-link active" onclick="showPage('dashboard')">📊 Dashboard</a>
+
+    <div class="sb-section">Menu</div>
+    <a class="sb-link" onclick="showPage('menu')">🍽️ Menu Items</a>
+    <a class="sb-link" onclick="showPage('addDish')">➕ Add Dish</a>
+
+    <div class="sb-section">Bookings</div>
+    <a class="sb-link" onclick="showPage('reservations')">📅 Reservations</a>
+    <a class="sb-link" onclick="showPage('events')">🎉 Events</a>
+
+    <div class="sb-section">Settings</div>
+    <a class="sb-link" onclick="showPage('offers')">🏷️ Offers</a>
+  </nav>
+  <div class="sb-bottom">
+    <div class="text-xs text-white/30 mb-2" id="adminName">Loading...</div>
+    <button onclick="logout()" class="adm-btn adm-btn-red adm-btn-sm w-full">Logout</button>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="mainContent">
+
+  <!-- ── DASHBOARD ── -->
+  <div id="pg-dashboard" class="page active">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title" style="color:#ff2b2b">Dashboard</h1>
+        <p class="text-white/35 text-sm">Welcome back! Here's today's overview.</p>
+      </div>
+      <button onclick="loadDashboard()" class="adm-btn adm-btn-green adm-btn-sm">↻ Refresh</button>
+    </div>
+    <div class="stats-grid" id="statsGrid">
+      <div class="stat-card sc-red"><div class="stat-num" id="s-menu">—</div><div class="stat-lbl">Total Menu Items</div></div>
+      <div class="stat-card sc-green"><div class="stat-num" id="s-specials">—</div><div class="stat-lbl">Today's Specials</div></div>
+      <div class="stat-card sc-yellow"><div class="stat-num" id="s-res">—</div><div class="stat-lbl">Pending Reservations</div></div>
+      <div class="stat-card sc-blue"><div class="stat-num" id="s-events">—</div><div class="stat-lbl">Pending Events</div></div>
+      <div class="stat-card sc-red"><div class="stat-num" id="s-booked">—</div><div class="stat-lbl">Seats Booked Today</div></div>
+      <div class="stat-card sc-green"><div class="stat-num" id="s-avail">—</div><div class="stat-lbl">Seats Available Today</div></div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+      <!-- Recent reservations -->
+      <div>
+        <h2 class="sec-h">Recent Reservations</h2>
+        <div class="tbl-wrap">
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Date</th><th>Guests</th><th>Status</th></tr></thead>
+            <tbody id="dash-res"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Recent events -->
+      <div>
+        <h2 class="sec-h">Recent Event Requests</h2>
+        <div class="tbl-wrap">
+          <table class="data-table">
+            <thead><tr><th>Name</th><th>Type</th><th>Date</th><th>Status</th></tr></thead>
+            <tbody id="dash-evt"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MENU MANAGEMENT ── -->
+  <div id="pg-menu" class="page">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title" style="color:#00ff9c">Menu Items</h1>
+        <p class="text-white/35 text-sm">Manage all dishes in the database</p>
+      </div>
+      <div class="flex gap-2">
+        <input type="text" id="menuSearch" placeholder="Search dishes..." class="adm-input" style="width:200px" oninput="filterAdminMenu()"/>
+        <button onclick="showPage('addDish')" class="adm-btn adm-btn-green adm-btn-sm">+ Add Dish</button>
+        <button onclick="loadAdminMenu()" class="adm-btn adm-btn-blue adm-btn-sm">↻</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="data-table">
+        <thead><tr><th>Dish</th><th>Category</th><th>Cuisine</th><th>Type</th><th>Price</th><th>Special</th><th>Offer</th><th>Actions</th></tr></thead>
+        <tbody id="menuTbl"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── ADD / EDIT DISH ── -->
+  <div id="pg-addDish" class="page">
+    <div class="topbar">
+      <h1 class="page-title" style="color:#00ff9c" id="dishFormTitle">Add New Dish</h1>
+      <button onclick="showPage('menu')" class="adm-btn adm-btn-blue adm-btn-sm">← Back</button>
+    </div>
+    <div class="bg-[#111] border border-white/5 rounded-xl p-7 max-w-3xl">
+      <form id="dishForm">
+        <input type="hidden" id="df-id"/>
+        <div class="grid grid-cols-2 gap-5">
+          <div><label class="adm-label">Dish Name *</label><input type="text" id="df-name" class="adm-input" required/></div>
+          <div><label class="adm-label">Price (₹) *</label><input type="number" id="df-price" class="adm-input" required/></div>
+          <div class="col-span-2"><label class="adm-label">Description *</label><textarea id="df-desc" rows="3" class="adm-input resize-none" required></textarea></div>
+          <div>
+            <label class="adm-label">Category *</label>
+            <select id="df-cat" class="adm-input" required>
+              <option value="">Select</option>
+              <option>Starter</option><option>Main Course</option><option>Breads</option>
+              <option>Rice & Biryani</option><option>Noodles & Fried Rice</option>
+              <option>Dessert</option><option>Mocktails</option><option>Beverages</option>
+            </select>
+          </div>
+          <div>
+            <label class="adm-label">Cuisine *</label>
+            <select id="df-cuisine" class="adm-input" required>
+              <option value="">Select</option>
+              <option>Indian</option><option>Chinese</option><option>Asian</option>
+              <option>Healthy</option><option>Continental</option>
+            </select>
+          </div>
+          <div>
+            <label class="adm-label">Type *</label>
+            <select id="df-type" class="adm-input" required>
+              <option value="">Select</option>
+              <option value="veg">🟢 Vegetarian</option>
+              <option value="non-veg">🔴 Non-Veg</option>
+            </select>
+          </div>
+          <div>
+            <label class="adm-label">Spice Level</label>
+            <select id="df-spice" class="adm-input">
+              <option value="mild">🟡 Mild</option><option value="medium">🟠 Medium</option>
+              <option value="spicy">🔴 Spicy</option><option value="extra-spicy">🌶️ Extra Spicy</option>
+            </select>
+          </div>
+          <div class="col-span-2"><label class="adm-label">Image URL</label><input type="url" id="df-img" class="adm-input" placeholder="https://..."/></div>
+          <div class="flex gap-6 items-center col-span-2">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" id="df-special" class="w-4 h-4 accent-[#ff2b2b]"/>
+              <span class="text-sm text-white/60">Mark as Today's Special ⭐</span>
+            </label>
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" id="df-available" checked class="w-4 h-4 accent-[#00ff9c]"/>
+              <span class="text-sm text-white/60">Available on Menu</span>
+            </label>
+          </div>
+        </div>
+        <div class="flex gap-3 mt-6">
+          <button type="submit" class="adm-btn adm-btn-green flex-1 py-2.5"><span id="dishFormBtnTxt">Save Dish</span></button>
+          <button type="button" onclick="resetDishForm()" class="adm-btn adm-btn-blue flex-1 py-2.5">Reset</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ── RESERVATIONS ── -->
+  <div id="pg-reservations" class="page">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title" style="color:#ffd700">Reservations</h1>
+        <p class="text-white/35 text-sm">Manage all table reservations</p>
+      </div>
+      <div class="flex gap-2 flex-wrap">
+        <select id="resFilter" class="adm-input" style="width:140px" onchange="loadReservations()">
+          <option value="">All</option><option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option><option value="cancelled">Cancelled</option><option value="completed">Completed</option>
+        </select>
+        <input type="date" id="resDateFilter" class="adm-input" style="width:160px" onchange="loadReservations()"/>
+        <button onclick="loadReservations()" class="adm-btn adm-btn-blue adm-btn-sm">↻</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="data-table">
+        <thead><tr><th>Ref</th><th>Name</th><th>Phone</th><th>Date</th><th>Time</th><th>Guests</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="resTbl"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── EVENTS ── -->
+  <div id="pg-events" class="page">
+    <div class="topbar">
+      <div>
+        <h1 class="page-title" style="color:#1ea7ff">Event Bookings</h1>
+        <p class="text-white/35 text-sm">Manage special celebration requests</p>
+      </div>
+      <div class="flex gap-2">
+        <select id="evtFilter" class="adm-input" style="width:140px" onchange="loadEvents()">
+          <option value="">All</option><option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option><option value="cancelled">Cancelled</option>
+        </select>
+        <button onclick="loadEvents()" class="adm-btn adm-btn-blue adm-btn-sm">↻</button>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table class="data-table">
+        <thead><tr><th>Ref</th><th>Name</th><th>Type</th><th>Date</th><th>Guests</th><th>Venue</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="evtTbl"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── OFFERS ── -->
+  <div id="pg-offers" class="page">
+    <div class="topbar">
+      <h1 class="page-title" style="color:#ffd700">Offers & Specials</h1>
+    </div>
+    <p class="text-white/40 text-sm mb-6">Toggle Today's Specials and promotional offers on menu items.</p>
+    <div class="tbl-wrap">
+      <table class="data-table">
+        <thead><tr><th>Dish</th><th>Price</th><th>Cuisine</th><th>Special ⭐</th><th>Offer 🏷️</th></tr></thead>
+        <tbody id="offerTbl"></tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- ADMIN TOAST -->
+<div id="adm-toast"></div>
+
+<!-- OFFER MODAL -->
+<div id="offerModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <strong id="om-dish-name">Dish</strong>
+        <div id="om-price" style="font-size:.85rem;color:rgba(255,255,255,.5)">₹0</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button onclick="closeOfferModal(true)" class="adm-btn adm-btn-blue adm-btn-sm">Cancel</button>
+        <button onclick="submitOfferModal()" class="adm-btn adm-btn-green adm-btn-sm">Save Offer</button>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label class="adm-label">Offer Type</label>
+          <select id="om-offer-type" class="adm-input" onchange="computeOfferPreview()">
+            <option value="percent">Percent (%)</option>
+            <option value="fixed">Fixed (₹)</option>
+          </select>
+        </div>
+        <div>
+          <label class="adm-label">Discount</label>
+          <input id="om-offer-value" class="adm-input" type="number" min="1" oninput="computeOfferPreview()" placeholder="e.g. 15 or 50" />
+        </div>
+      </div>
+      <div class="offer-preview" id="om-preview">
+        <span class="orig" id="om-preview-orig">₹0</span>
+        <span class="new" id="om-preview-new">₹0</span>
+      </div>
+      <div class="om-error" id="om-error">Invalid discount</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── CONFIG ── */
+const API = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:5000/api' : '/api';
+let TOKEN = localStorage.getItem('n9_admin_token');
+let allAdminItems = [];
+
+/* ── AUTH ── */
+document.getElementById('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const email = document.getElementById('lEmail').value;
+  const pass  = document.getElementById('lPass').value;
+  const err   = document.getElementById('loginErr');
+  try {
+    const res  = await fetch(`${API}/admin/login`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass })
+    });
+    const data = await res.json();
+    if (data.success) {
+      TOKEN = data.token;
+      localStorage.setItem('n9_admin_token', TOKEN);
+      document.getElementById('loginScreen').classList.add('gone');
+      document.getElementById('adminName').textContent = data.admin.name;
+      loadDashboard();
+    } else {
+      err.textContent = data.message;
+      err.classList.remove('hidden');
+    }
+  } catch {
+    err.textContent = 'Server offline. Start backend with: cd server && npm start';
+    err.classList.remove('hidden');
+  }
+});
+
+function logout() {
+  localStorage.removeItem('n9_admin_token');
+  location.reload();
+}
+
+// Auto-login if token exists
+if (TOKEN) {
+  fetch(`${API}/admin/me`, { headers: { Authorization: `Bearer ${TOKEN}` } })
+    .then(r => r.json())
+    .then(d => {
+      if (d.success) {
+        document.getElementById('loginScreen').classList.add('gone');
+        document.getElementById('adminName').textContent = d.data.name;
+        loadDashboard();
+      } else {
+        localStorage.removeItem('n9_admin_token');
+      }
+    })
+    .catch(() => localStorage.removeItem('n9_admin_token'));
+}
+
+const authHeaders = () => ({ 'Content-Type': 'application/json', Authorization: `Bearer ${TOKEN}` });
+
+/* ── PAGE NAVIGATION ── */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(`pg-${name}`).classList.add('active');
+  document.querySelectorAll('.sb-link').forEach(l => l.classList.remove('active'));
+  document.querySelectorAll(`.sb-link`).forEach(l => {
+    if (l.getAttribute('onclick')?.includes(`'${name}'`)) l.classList.add('active');
+  });
+  const loaders = { menu:'loadAdminMenu', reservations:'loadReservations', events:'loadEvents', offers:'loadOffers', dashboard:'loadDashboard' };
+  if (loaders[name]) window[loaders[name]]();
+}
+
+/* ── TOAST ── */
+let toastTmr;
+function admToast(msg, err = false) {
+  const t = document.getElementById('adm-toast');
+  t.textContent = msg;
+  t.className = `show${err ? ' err' : ''}`;
+  clearTimeout(toastTmr);
+  toastTmr = setTimeout(() => t.className = '', 3800);
+}
+
+/* ── STATUS BADGE ── */
+function statusBadge(s) {
+  const m = { pending:'st-pending', confirmed:'st-confirmed', cancelled:'st-cancelled', completed:'st-completed' };
+  return `<span class="status ${m[s]||'st-pending'}">${s}</span>`;
+}
+
+/* ── DASHBOARD ── */
+async function loadDashboard() {
+  try {
+    const [stats, resData, evtData] = await Promise.all([
+      fetch(`${API}/admin/stats`, { headers: authHeaders() }).then(r => r.json()),
+      fetch(`${API}/reservations?limit=5`, { headers: authHeaders() }).then(r => r.json()),
+      fetch(`${API}/events?limit=5`, { headers: authHeaders() }).then(r => r.json()),
+    ]);
+    if (stats.success) {
+      document.getElementById('s-menu').textContent     = stats.data.totalMenuItems;
+      document.getElementById('s-specials').textContent = stats.data.todaysSpecials;
+      document.getElementById('s-res').textContent      = stats.data.pendingReservations;
+      document.getElementById('s-events').textContent   = stats.data.pendingEvents;
+      document.getElementById('s-booked').textContent   = stats.data.seatsBooked;
+      document.getElementById('s-avail').textContent    = stats.data.seatsAvailable;
+    }
+    // Recent reservations
+    const rTbl = document.getElementById('dash-res');
+    rTbl.innerHTML = (resData.data||[]).slice(0,5).map(r =>
+      `<tr><td>${r.name}</td><td>${new Date(r.date).toLocaleDateString('en-IN')}</td><td>${r.guests}</td><td>${statusBadge(r.status)}</td></tr>`
+    ).join('') || '<tr><td colspan="4" class="text-center text-white/25 py-4">No reservations yet</td></tr>';
+
+    const eTbl = document.getElementById('dash-evt');
+    eTbl.innerHTML = (evtData.data||[]).slice(0,5).map(e =>
+      `<tr><td>${e.name}</td><td>${e.eventType}</td><td>${new Date(e.date).toLocaleDateString('en-IN')}</td><td>${statusBadge(e.status)}</td></tr>`
+    ).join('') || '<tr><td colspan="4" class="text-center text-white/25 py-4">No events yet</td></tr>';
+  } catch {
+    admToast('Could not load dashboard data', true);
+  }
+}
+
+/* ── MENU MANAGEMENT ── */
+async function loadAdminMenu() {
+  const tbl = document.getElementById('menuTbl');
+  tbl.innerHTML = '<tr><td colspan="8" class="text-center py-6 text-white/30">Loading...</td></tr>';
+  try {
+    const res  = await fetch(`${API}/menu/admin/all`, { headers: authHeaders() });
+    const data = await res.json();
+    allAdminItems = data.data || [];
+    renderAdminMenu(allAdminItems);
+  } catch {
+    tbl.innerHTML = '<tr><td colspan="8" class="text-center py-6 text-white/30">Server offline</td></tr>';
+  }
+}
+
+function renderAdminMenu(items) {
+  const tbl = document.getElementById('menuTbl');
+  tbl.innerHTML = items.map(d => `
+    <tr>
+      <td><div class="font-semibold text-white">${d.name}</div><div class="text-xs text-white/30 mt-0.5">${d.description.substring(0,40)}...</div></td>
+      <td>${d.category}</td>
+      <td>${d.cuisine}</td>
+      <td><span class="type-dot inline-block w-2 h-2 rounded-full mr-1 ${d.type==='veg'?'bg-green-400':'bg-red-500'}"></span>${d.type}</td>
+      <td class="font-bold" style="color:#00ff9c">₹${d.price}</td>
+      <td>
+        <label class="toggle"><input type="checkbox" ${d.isSpecial?'checked':''} onchange="toggleSpecial('${d._id}')"/><span class="toggle-slider"></span></label>
+      </td>
+      <td>
+        <label class="toggle"><input type="checkbox" ${d.isOffer?'checked':''} onchange="toggleOffer(this,'${d._id}')"/><span class="toggle-slider"></span></label>
+      </td>
+      <td>
+        <div class="flex gap-1.5">
+          <button onclick="editDish(${JSON.stringify(d).replace(/"/g,'&quot;')})" class="adm-btn adm-btn-blue adm-btn-sm">Edit</button>
+          <button onclick="deleteDish('${d._id}')" class="adm-btn adm-btn-red adm-btn-sm">Del</button>
+        </div>
+      </td>
+    </tr>`).join('') || '<tr><td colspan="8" class="text-center py-6 text-white/30">No menu items found</td></tr>';
+}
+
+function filterAdminMenu() {
+  const q = document.getElementById('menuSearch').value.toLowerCase();
+  renderAdminMenu(allAdminItems.filter(d =>
+    d.name.toLowerCase().includes(q) ||
+    d.cuisine.toLowerCase().includes(q) ||
+    d.category.toLowerCase().includes(q)
+  ));
+}
+
+/* ── ADD / EDIT DISH FORM ── */
+document.getElementById('dishForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const id = document.getElementById('df-id').value;
+  const body = {
+    name       : document.getElementById('df-name').value,
+    description: document.getElementById('df-desc').value,
+    price      : Number(document.getElementById('df-price').value),
+    category   : document.getElementById('df-cat').value,
+    cuisine    : document.getElementById('df-cuisine').value,
+    type       : document.getElementById('df-type').value,
+    spiceLevel : document.getElementById('df-spice').value,
+    image      : document.getElementById('df-img').value || undefined,
+    isSpecial  : document.getElementById('df-special').checked,
+    isAvailable: document.getElementById('df-available').checked,
+  };
+  try {
+    const url = id ? `${API}/menu/${id}` : `${API}/menu`;
+    const method = id ? 'PUT' : 'POST';
+    const res  = await fetch(url, { method, headers: authHeaders(), body: JSON.stringify(body) });
+    const data = await res.json();
+    if (data.success) {
+      admToast(data.message);
+      resetDishForm();
+      showPage('menu');
+    } else {
+      admToast(data.message, true);
+    }
+  } catch {
+    admToast('Server error', true);
+  }
+});
+
+function editDish(d) {
+  showPage('addDish');
+  document.getElementById('dishFormTitle').textContent = 'Edit Dish';
+  document.getElementById('dishFormBtnTxt').textContent = 'Update Dish';
+  document.getElementById('df-id').value        = d._id;
+  document.getElementById('df-name').value      = d.name;
+  document.getElementById('df-desc').value      = d.description;
+  document.getElementById('df-price').value     = d.price;
+  document.getElementById('df-cat').value       = d.category;
+  document.getElementById('df-cuisine').value   = d.cuisine;
+  document.getElementById('df-type').value      = d.type;
+  document.getElementById('df-spice').value     = d.spiceLevel;
+  document.getElementById('df-img').value       = d.image || '';
+  document.getElementById('df-special').checked = d.isSpecial;
+  document.getElementById('df-available').checked = d.isAvailable;
+}
+
+function resetDishForm() {
+  document.getElementById('dishFormTitle').textContent  = 'Add New Dish';
+  document.getElementById('dishFormBtnTxt').textContent = 'Save Dish';
+  document.getElementById('df-id').value = '';
+  document.getElementById('dishForm').reset();
+  document.getElementById('df-available').checked = true;
+}
+
+async function deleteDish(id) {
+  if (!confirm('Delete this dish permanently?')) return;
+  try {
+    const res  = await fetch(`${API}/menu/${id}`, { method: 'DELETE', headers: authHeaders() });
+    const data = await res.json();
+    admToast(data.message, !data.success);
+    if (data.success) loadAdminMenu();
+  } catch {
+    admToast('Error deleting dish', true);
+  }
+}
+
+async function toggleSpecial(id) {
+  try {
+    const res  = await fetch(`${API}/menu/${id}/toggle-special`, { method: 'PATCH', headers: authHeaders() });
+    const data = await res.json();
+    admToast(data.message, !data.success);
+    // Refresh admin menu table so the toggle state and counts update
+    if (data.success) {
+      loadAdminMenu();
+      // Warm public specials endpoint (no-op if not needed) to ensure consistency
+      fetch(`${API}/menu/specials`).catch(() => {});
+    }
+  } catch {
+    admToast('Error', true);
+  }
+}
+
+async function toggleOffer(elem, id) {
+  try {
+    // If enabling offer (checkbox checked) open modal to collect details
+    if (elem.checked) {
+      openOfferModal(elem, id);
+      return;
+    }
+
+    // Disabling offer
+    if (!confirm('Disable offer for this dish?')) { elem.checked = true; return; }
+    const res  = await fetch(`${API}/menu/${id}/toggle-offer`, { method: 'PATCH', headers: authHeaders(), body: JSON.stringify({}) });
+    const data = await res.json();
+    if (!data.success) elem.checked = !elem.checked;
+    admToast(data.message, !data.success);
+    if (data.success) loadAdminMenu();
+  } catch (err) {
+    admToast('Error', true);
+    elem.checked = !elem.checked;
+  }
+}
+
+// Offer modal state
+let __offerModalElem = null;
+let __offerModalId = null;
+
+function openOfferModal(elem, id) {
+  const modal = document.getElementById('offerModal');
+  const item = allAdminItems.find(x => x._id === id) || {};
+  __offerModalElem = elem;
+  __offerModalId = id;
+  // Populate default values
+  document.getElementById('om-dish-name').textContent = item.name || 'Dish';
+  document.getElementById('om-price').textContent = item.price ? `₹${item.price}` : '—';
+  // If item already has an offer, prefill values
+  document.getElementById('om-offer-type').value = item.isOffer && item.offerType ? item.offerType : 'percent';
+  document.getElementById('om-offer-value').value = item.isOffer && item.offerValue ? item.offerValue : '';
+  document.getElementById('om-error').style.display = 'none';
+  // initial preview
+  computeOfferPreview();
+  modal.style.display = 'flex';
+}
+
+function closeOfferModal(revertCheckbox = true) {
+  const modal = document.getElementById('offerModal');
+  modal.style.display = 'none';
+  if (revertCheckbox && __offerModalElem) __offerModalElem.checked = false;
+  __offerModalElem = null;
+  __offerModalId = null;
+}
+
+function computeOfferPreview() {
+  const t = document.getElementById('om-offer-type').value;
+  const v = Number(document.getElementById('om-offer-value').value);
+  const item = allAdminItems.find(x => x._id === __offerModalId) || {};
+  const p = item.price || 0;
+  const preview = document.getElementById('om-preview');
+  const origSpan = document.getElementById('om-preview-orig');
+  const newSpan = document.getElementById('om-preview-new');
+  const errEl = document.getElementById('om-error');
+  errEl.style.display = 'none';
+  if (!v || v <= 0) { origSpan.textContent = `₹${p}`; newSpan.textContent = ''; return; }
+  let newPrice = null;
+  if (t === 'percent') {
+    if (v <= 0 || v >= 100) { errEl.textContent = 'Percent must be between 1 and 99'; errEl.style.display = ''; origSpan.textContent = `₹${p}`; newSpan.textContent = ''; return; }
+    newPrice = Math.max(0, Math.round(p * (1 - v / 100)));
+  } else {
+    if (v <= 0 || v >= p) { errEl.textContent = 'Fixed discount must be less than the price'; errEl.style.display = ''; origSpan.textContent = `₹${p}`; newSpan.textContent = ''; return; }
+    newPrice = Math.max(0, Math.round(p - v));
+  }
+  origSpan.textContent = `₹${p}`;
+  newSpan.textContent = `₹${newPrice}`;
+}
+
+async function submitOfferModal() {
+  const type = document.getElementById('om-offer-type').value;
+  const val = Number(document.getElementById('om-offer-value').value);
+  const errEl = document.getElementById('om-error');
+  errEl.style.display = 'none';
+  if (!type || !val || isNaN(val) || val <= 0) { errEl.textContent = 'Provide valid offer details'; errEl.style.display = ''; return; }
+  try {
+    const res = await fetch(`${API}/menu/${__offerModalId}/toggle-offer`, {
+      method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ offerType: type, offerValue: val })
+    });
+    const data = await res.json();
+    if (!data.success) {
+      errEl.textContent = data.message || 'Error'; errEl.style.display = '';
+      return;
+    }
+    admToast(data.message);
+    closeOfferModal(false);
+    loadAdminMenu();
+  } catch (err) {
+    admToast('Server error', true);
+    closeOfferModal(true);
+  }
+}
+
+/* ── RESERVATIONS ── */
+async function loadReservations() {
+  const tbl    = document.getElementById('resTbl');
+  const status = document.getElementById('resFilter').value;
+  const date   = document.getElementById('resDateFilter').value;
+  tbl.innerHTML = '<tr><td colspan="8" class="text-center py-6 text-white/30">Loading...</td></tr>';
+  let url = `${API}/reservations?`;
+  if (status) url += `status=${status}&`;
+  if (date)   url += `date=${date}`;
+  try {
+    const res  = await fetch(url, { headers: authHeaders() });
+    const data = await res.json();
+    tbl.innerHTML = (data.data||[]).map(r => `
+      <tr>
+        <td class="text-xs font-mono text-white/40">${r.bookingRef}</td>
+        <td><div class="font-semibold">${r.name}</div>${r.specialRequest?`<div class="text-xs text-white/30">${r.specialRequest.substring(0,30)}</div>`:''}</td>
+        <td>${r.phone}</td>
+        <td>${new Date(r.date).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</td>
+        <td>${r.time}</td>
+        <td>${r.guests}</td>
+        <td>${statusBadge(r.status)}</td>
+        <td>
+          <select onchange="updateResStatus('${r._id}',this.value)" class="adm-input text-xs py-1 px-2" style="width:120px">
+            <option value="pending" ${r.status==='pending'?'selected':''}>Pending</option>
+            <option value="confirmed" ${r.status==='confirmed'?'selected':''}>Confirmed</option>
+            <option value="cancelled" ${r.status==='cancelled'?'selected':''}>Cancelled</option>
+            <option value="completed" ${r.status==='completed'?'selected':''}>Completed</option>
+          </select>
+        </td>
+      </tr>`).join('') || '<tr><td colspan="8" class="text-center py-6 text-white/30">No reservations found</td></tr>';
+  } catch {
+    tbl.innerHTML = '<tr><td colspan="8" class="text-center py-6 text-white/30">Server offline</td></tr>';
+  }
+}
+
+async function updateResStatus(id, status) {
+  try {
+    const res  = await fetch(`${API}/reservations/${id}/status`, {
+      method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ status })
+    });
+    const data = await res.json();
+    admToast(data.message, !data.success);
+  } catch {
+    admToast('Error', true);
+  }
+}
+
+/* ── EVENTS ── */
+async function loadEvents() {
+  const tbl = document.getElementById('evtTbl');
+  const status = document.getElementById('evtFilter').value;
+  tbl.innerHTML = '<tr><td colspan="8" class="text-center py-6 text-white/30">Loading...</td></tr>';
+  try {
+    const res  = await fetch(`${API}/events${status?`?status=${status}`:''}`, { headers: authHeaders() });
+    const data = await res.json();
+    tbl.innerHTML = (data.data||[]).map(e => `
+      <tr>
+        <td class="text-xs font-mono text-white/40">${e.bookingRef}</td>
+        <td><div class="font-semibold">${e.name}</div><div class="text-xs text-white/30">${e.phone}</div></td>
+        <td>${e.eventType}</td>
+        <td>${new Date(e.date).toLocaleDateString('en-IN',{day:'2-digit',month:'short'})}</td>
+        <td>${e.guestCount}</td>
+        <td>${e.venue}</td>
+        <td>${statusBadge(e.status)}</td>
+        <td>
+          <select onchange="updateEvtStatus('${e._id}',this.value)" class="adm-input text-xs py-1 px-2" style="width:120px">
+            <option value="pending" ${e.status==='pending'?'selected':''}>Pending</option>
+            <option value="confirmed" ${e.status==='confirmed'?'selected':''}>Confirmed</option>
+            <option value="cancelled" ${e.status==='cancelled'?'selected':''}>Cancelled</option>
+            <option value="completed" ${e.status==='completed'?'selected':''}>Completed</option>
+          </select>
+        </td>
+      </tr>`).join('') || '<tr><td colspan="8" class="text-center py-6 text-white/30">No events found</td></tr>';
+  } catch {
+    tbl.innerHTML = '<tr><td colspan="8" class="text-center py-6 text-white/30">Server offline</td></tr>';
+  }
+}
+
+async function updateEvtStatus(id, status) {
+  try {
+    const res  = await fetch(`${API}/events/${id}`, {
+      method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ status })
+    });
+    const data = await res.json();
+    admToast(data.message, !data.success);
+  } catch {
+    admToast('Error', true);
+  }
+}
+
+/* ── OFFERS TABLE ── */
+async function loadOffers() {
+  const tbl = document.getElementById('offerTbl');
+  try {
+    const res  = await fetch(`${API}/menu/admin/all`, { headers: authHeaders() });
+    const data = await res.json();
+    tbl.innerHTML = (data.data||[]).map(d => `
+      <tr>
+        <td><div class="font-semibold">${d.name}</div><div class="text-xs text-white/30">${d.category}</div></td>
+        <td style="color:#00ff9c;font-weight:700">₹${d.price}</td>
+        <td>${d.cuisine}</td>
+        <td>
+          <label class="toggle"><input type="checkbox" ${d.isSpecial?'checked':''} onchange="toggleSpecial('${d._id}')"/><span class="toggle-slider"></span></label>
+        </td>
+        <td>
+          <label class="toggle"><input type="checkbox" ${d.isOffer?'checked':''} onchange="toggleOffer(this,'${d._id}')"/><span class="toggle-slider"></span></label>
+        </td>
+      </tr>`).join('');
+  } catch {
+    admToast('Could not load menu', true);
+  }
+}
+</script>
+</body>
+</html>
