@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: nottee9-backend
+    env: node
+    branch: main
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    plan: free
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
