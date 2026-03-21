@@ -104,6 +104,22 @@ app.use((err, req, res, next) => {
 
 // ── Start Server (only if run directly) ─────────────────────────
 const PORT = process.env.PORT || 5000;
+// ── Runtime env validation (fail fast in production) ─────────────
+const requiredInProd = ['MONGODB_URI', 'JWT_SECRET', 'CLIENT_URL'];
+if (process.env.NODE_ENV === 'production') {
+  const missing = requiredInProd.filter(k => !process.env[k]);
+  if (missing.length) {
+    console.error('❌ Missing required environment variables:', missing.join(', '));
+    console.error('Please add them to your Render/production environment and redeploy.');
+    process.exit(1);
+  }
+} else {
+  const warnMissing = requiredInProd.filter(k => !process.env[k]);
+  if (warnMissing.length) {
+    console.warn('⚠️  Recommended env vars not set (dev):', warnMissing.join(', '));
+  }
+}
+
 if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`\n🌶️  NOTTEE9 Server running on http://localhost:${PORT}`);
