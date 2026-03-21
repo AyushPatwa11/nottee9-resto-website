@@ -1,0 +1,13 @@
+# Node
+node_modules/
+/server/node_modules/
+
+# Logs
+.log
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Editor
+.vscode/
